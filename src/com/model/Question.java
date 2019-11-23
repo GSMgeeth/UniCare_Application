@@ -22,7 +22,7 @@ public class Question implements Serializable {
 
 	private long surveyID;
 	private int questionID;
-	private String QuestionText;
+	private String questionText;
 	private AnswerType answerType;
 	private Answer[] answers;
 
@@ -54,7 +54,7 @@ public class Question implements Serializable {
 	 */
 	public Question(String questionText, AnswerType answerType, Answer[] answers) {
 		super();
-		QuestionText = questionText;
+		this.questionText = questionText;
 		this.answerType = answerType;
 		this.answers = answers;
 	}
@@ -72,7 +72,7 @@ public class Question implements Serializable {
 		super();
 		this.surveyID = surveyID;
 		this.questionID = questionID;
-		QuestionText = questionText;
+		this.questionText = questionText;
 		this.answerType = answerType;
 		this.answers = answers;
 	}
@@ -109,14 +109,14 @@ public class Question implements Serializable {
 	 * @return the questionText
 	 */
 	public String getQuestionText() {
-		return QuestionText;
+		return questionText;
 	}
 
 	/**
 	 * @param questionText the questionText to set
 	 */
 	public void setQuestionText(String questionText) {
-		QuestionText = questionText;
+		this.questionText = questionText;
 	}
 
 	/**

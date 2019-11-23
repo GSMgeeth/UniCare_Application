@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.model.Student;
-import com.model.Survey;
+import com.model.Submission;
 import com.model_controller.StudentControllerInterface;
 import com.model_controller.SubmissionControllerInterface;
 
@@ -56,8 +56,8 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 *
 	 */
 	@Override
-	public void submitSurveyAnswers(Survey survey) throws RemoteException {
-		submissionController.saveSubmission(null);
+	public void submitSurveyAnswers(Submission submission) throws RemoteException {
+		submissionController.saveSubmission(submission);
 	}
 
 	/**

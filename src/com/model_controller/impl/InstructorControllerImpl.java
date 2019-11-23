@@ -81,7 +81,7 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 *
 	 */
 	@Override
-	public void getSurveyAnalysis(long surveyID) throws RemoteException {
+	public void showSurveyAnalysis(long surveyID) throws RemoteException {
 		// TODO Auto-generated method stub
 
 	}

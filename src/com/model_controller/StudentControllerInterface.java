@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.model.Student;
-import com.model.Survey;
+import com.model.Submission;
 
 /**
  * StudentControllerInterface contains operations of student and extends Remote
@@ -37,7 +37,7 @@ public interface StudentControllerInterface extends Remote {
 	 * @param survey
 	 * @throws RemoteException
 	 */
-	public void submitSurveyAnswers(Survey survey) throws RemoteException;
+	public void submitSurveyAnswers(Submission submission) throws RemoteException;
 
 	/**
 	 * @return

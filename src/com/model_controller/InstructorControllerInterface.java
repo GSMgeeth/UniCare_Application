@@ -51,7 +51,7 @@ public interface InstructorControllerInterface extends Remote {
 	 * @param surveyID
 	 * @throws RemoteException
 	 */
-	public void getSurveyAnalysis(long surveyID) throws RemoteException;
+	public void showSurveyAnalysis(long surveyID) throws RemoteException;
 
 	/**
 	 * Add Student to system.
