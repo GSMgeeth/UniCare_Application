@@ -15,7 +15,6 @@ import com.exception.UserInvalidException;
 import com.exception.UserTypeInvalidException;
 import com.model.Student;
 import com.model_controller.StudentControllerInterface;
-import com.model_controller.SubmissionControllerInterface;
 
 /**
  * @author umadhg1
@@ -33,14 +32,11 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 */
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private SubmissionControllerInterface submissionController;
-
 	/**
 	 * @throws RemoteException
 	 */
 	public StudentControllerImpl() throws RemoteException {
 		super();
-		submissionController = new SubmissionControllerImpl();
 	}
 
 	/**

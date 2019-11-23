@@ -57,8 +57,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public ArrayList<Survey> getOngoingSurveys() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getOngoingSurveys();
 	}
 
 	/**
@@ -66,8 +65,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public ArrayList<Survey> getSurveyTemplates() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getSurveyTemplates();
 	}
 
 	/**
@@ -75,9 +73,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public Survey getSurveyByName(String surveyName) throws RemoteException {
-
-		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Survey " + surveyName + " sent!");
-		return new Survey(surveyName, null, null, 1, null, null, null, null, null);
+		return Database.getSurveyByName(surveyName);
 	}
 
 	/**
@@ -85,8 +81,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public ArrayList<Survey> getSurveysByBatch(String batch) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getSurveysByBatch(batch);
 	}
 
 	/**
@@ -94,8 +89,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public ArrayList<Survey> getSurveysByCourseID(String courseID) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getSurveysByCourseID(courseID);
 	}
 
 	/**
@@ -103,17 +97,7 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public ArrayList<Student> getPendingStudentsForSurvey(long surveyID) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public void showSurveyAnalysis(long surveyID) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		return Database.getPendingStudentsForSurvey(surveyID);
 	}
 
 }

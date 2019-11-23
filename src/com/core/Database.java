@@ -3,6 +3,7 @@
  */
 package com.core;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,11 +61,22 @@ public class Database {
 	 * Save | update | soft delete the instructor in database.
 	 * 
 	 * @param instructor
-	 * @throws UserInvalidException
+	 * @throws Exception
 	 */
-	public static void saveInstructor(Instructor instructor) throws UserInvalidException {
+	public static void saveInstructor(Instructor instructor) throws Exception {
 		if (Validation.validateInstructorObject(instructor)) {
-			// TBI
+
+			String sql = "INSERT INTO instructor (name, email, uname, pw, reg_date) VALUES (?,?,?,?,?)";
+			SqlConnection.updateDB(sql, ps -> {
+				int i = 0;
+				ps.setString(++i, instructor.getPersonName());
+				ps.setString(++i, instructor.getEmail());
+				ps.setString(++i, instructor.getUsername());
+				ps.setString(++i, instructor.getPassword());
+				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(instructor.getSignedDate()));
+				return ps;
+			});
+
 			logger.log(Level.INFO, "Instructor saved into database!");
 		} else {
 			throw new UserInvalidException();
@@ -75,11 +87,24 @@ public class Database {
 	 * Save | update | soft delete the student in database.
 	 * 
 	 * @param student
-	 * @throws UserInvalidException
+	 * @throws Exception
 	 */
-	public static void saveStudent(Student student) throws UserInvalidException {
+	public static void saveStudent(Student student) throws Exception {
 		if (Validation.validateStudentObject(student)) {
-			// TBI
+
+			String sql = "INSERT INTO student (name, email, batch, courseID, uname, pw, reg_date) VALUES (?,?,?,?,?,?,?)";
+			SqlConnection.updateDB(sql, ps -> {
+				int i = 0;
+				ps.setString(++i, student.getPersonName());
+				ps.setString(++i, student.getEmail());
+				ps.setString(++i, student.getBatch());
+				ps.setString(++i, student.getCourseID());
+				ps.setString(++i, student.getUsername());
+				ps.setString(++i, student.getPassword());
+				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(student.getSignedDate()));
+				return ps;
+			});
+
 			logger.log(Level.INFO, "Student saved into database!");
 		} else {
 			throw new UserInvalidException();
@@ -208,6 +233,128 @@ public class Database {
 			// TBI
 
 			return students;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get ongoing surveys.
+	 * 
+	 * @return Survey list.
+	 */
+	public static ArrayList<Survey> getOngoingSurveys() {
+		ArrayList<Survey> surveys = new ArrayList<Survey>();
+		// TBI
+
+		return surveys;
+	}
+
+	/**
+	 * Get Survey templates.
+	 * 
+	 * @return Survey list with empty attribute values.
+	 */
+	public static ArrayList<Survey> getSurveyTemplates() {
+		ArrayList<Survey> surveys = new ArrayList<Survey>();
+		// TBI
+
+		return surveys;
+	}
+
+	/**
+	 * Get Survey By ID.
+	 * 
+	 * @param surveyID
+	 * @return Survey.
+	 */
+	public static Survey getSurveyByID(long surveyID) {
+		Survey survey = new Survey();
+		// TBI
+
+		return survey;
+	}
+
+	/**
+	 * Get Survey by name.
+	 * 
+	 * @param surveyName
+	 * @return Survey.
+	 */
+	public static Survey getSurveyByName(String surveyName) {
+		if (surveyName != null && !surveyName.equals("")) {
+			Survey survey = new Survey();
+			// TBI
+
+			return survey;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get Survey by batch.
+	 * 
+	 * @param batch
+	 * @return Survey list
+	 */
+	public static ArrayList<Survey> getSurveysByBatch(String batch) {
+		if (batch != null && !batch.equals("")) {
+			ArrayList<Survey> surveys = new ArrayList<Survey>();
+			// TBI
+
+			return surveys;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get Survey by course ID
+	 * 
+	 * @param courseID
+	 * @return Survey list.
+	 */
+	public static ArrayList<Survey> getSurveysByCourseID(String courseID) {
+		if (courseID != null && !courseID.equals("")) {
+			ArrayList<Survey> surveys = new ArrayList<Survey>();
+			// TBI
+
+			return surveys;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get students who have not submitted for the survey.
+	 * 
+	 * @param surveyID
+	 * @return Student list.
+	 */
+	public static ArrayList<Student> getPendingStudentsForSurvey(long surveyID) {
+		if (surveyID > 0) {
+			ArrayList<Student> students = new ArrayList<Student>();
+			// TBI
+
+			return students;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get Submissions for a particular survey.
+	 * 
+	 * @param surveyID
+	 * @return Submission list.
+	 */
+	public static ArrayList<Submission> getSubmissionsForSurvey(long surveyID) {
+		if (surveyID > 0) {
+			ArrayList<Submission> submissions = new ArrayList<Submission>();
+			// TBI
+
+			return submissions;
 		}
 
 		return null;

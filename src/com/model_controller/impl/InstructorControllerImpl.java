@@ -14,8 +14,6 @@ import com.exception.UserInvalidException;
 import com.exception.UserTypeInvalidException;
 import com.model.Instructor;
 import com.model_controller.InstructorControllerInterface;
-import com.model_controller.StudentControllerInterface;
-import com.model_controller.SurveyControllerInterface;
 
 /**
  * InstructorControllerImpl implements InstructorControllerInterface.
@@ -35,9 +33,6 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 */
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	private StudentControllerInterface studentController;
-	private SurveyControllerInterface surveyController;
-
 	/**
 	 * Constructor.
 	 * 
@@ -45,8 +40,6 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 */
 	public InstructorControllerImpl() throws RemoteException {
 		super();
-		studentController = new StudentControllerImpl();
-		surveyController = new SurveyControllerImpl();
 	}
 
 	/**

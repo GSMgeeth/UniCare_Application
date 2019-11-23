@@ -56,14 +56,7 @@ public class SubmissionControllerImpl extends UnicastRemoteObject implements Sub
 	 */
 	@Override
 	public ArrayList<Submission> getSubmissionsForSurvey(long surveyID) throws RemoteException {
-
-		ArrayList<Submission> submissions = new ArrayList<>();
-
-		submissions.add(new Submission(surveyID, 1, 1, null));
-
-		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Submissions under " + surveyID + " sent!");
-
-		return submissions;
+		return Database.getSubmissionsForSurvey(surveyID);
 	}
 
 }
