@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.core.Database;
+import com.exception.SubmissionInvalidException;
 import com.model.Submission;
 import com.model_controller.SubmissionControllerInterface;
 
@@ -24,6 +26,11 @@ public class SubmissionControllerImpl extends UnicastRemoteObject implements Sub
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Logger for logging status reports.
+	 */
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	/**
 	 * @throws RemoteException
 	 */
 	public SubmissionControllerImpl() throws RemoteException {
@@ -35,7 +42,13 @@ public class SubmissionControllerImpl extends UnicastRemoteObject implements Sub
 	 */
 	@Override
 	public void saveSubmission(Submission submission) throws RemoteException {
-		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Submission Saved!");
+		try {
+			Database.saveSubmission(submission);
+			logger.log(Level.INFO, "Submission saved!");
+		} catch (SubmissionInvalidException e) {
+			logger.log(Level.WARNING, "Submission invalid!");
+			e.printStackTrace();
+		}
 	}
 
 	/**

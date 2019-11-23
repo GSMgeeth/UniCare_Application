@@ -4,6 +4,7 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.common.AnswerType;
 
@@ -24,7 +25,7 @@ public class Question implements Serializable {
 	private int questionID;
 	private String questionText;
 	private AnswerType answerType;
-	private Answer[] answers;
+	private ArrayList<Answer> answers;
 
 	/**
 	 * Default Constructor.
@@ -52,7 +53,7 @@ public class Question implements Serializable {
 	 * @param answerType
 	 * @param answers
 	 */
-	public Question(String questionText, AnswerType answerType, Answer[] answers) {
+	public Question(String questionText, AnswerType answerType, ArrayList<Answer> answers) {
 		super();
 		this.questionText = questionText;
 		this.answerType = answerType;
@@ -68,7 +69,8 @@ public class Question implements Serializable {
 	 * @param answerType
 	 * @param answers
 	 */
-	public Question(long surveyID, int questionID, String questionText, AnswerType answerType, Answer[] answers) {
+	public Question(long surveyID, int questionID, String questionText, AnswerType answerType,
+			ArrayList<Answer> answers) {
 		super();
 		this.surveyID = surveyID;
 		this.questionID = questionID;
@@ -136,14 +138,14 @@ public class Question implements Serializable {
 	/**
 	 * @return the answers
 	 */
-	public Answer[] getAnswers() {
+	public ArrayList<Answer> getAnswers() {
 		return answers;
 	}
 
 	/**
 	 * @param answers the answers to set
 	 */
-	public void setAnswers(Answer[] answers) {
+	public void setAnswers(ArrayList<Answer> answers) {
 		this.answers = answers;
 	}
 

@@ -24,6 +24,9 @@ import com.model_controller.impl.SurveyControllerImpl;
  */
 public class UniCareServer {
 
+	/**
+	 * Logger for logging status reports.
+	 */
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**

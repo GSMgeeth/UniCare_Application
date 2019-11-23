@@ -5,6 +5,7 @@ package com.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Survey class defines survey properties.
@@ -27,8 +28,8 @@ public class Survey implements Serializable {
 	private Date builtDate;
 	private Date publishedDate;
 	private Date endedDate;
-	private Question[] questions;
-	private Submission[] submissions;
+	private ArrayList<Question> questions;
+	private ArrayList<Submission> submissions;
 
 	/**
 	 * Default Constructor.
@@ -61,7 +62,7 @@ public class Survey implements Serializable {
 	 * @param submissions
 	 */
 	public Survey(String surveyName, String batch, String courseID, long builtInstructorID, Date builtDate,
-			Date publishedDate, Date endedDate, Question[] questions, Submission[] submissions) {
+			Date publishedDate, Date endedDate, ArrayList<Question> questions, ArrayList<Submission> submissions) {
 		super();
 		this.surveyName = surveyName;
 		this.batch = batch;
@@ -89,7 +90,8 @@ public class Survey implements Serializable {
 	 * @param submissions
 	 */
 	public Survey(long surveyID, String surveyName, String batch, String courseID, long builtInstructorID,
-			Date builtDate, Date publishedDate, Date endedDate, Question[] questions, Submission[] submissions) {
+			Date builtDate, Date publishedDate, Date endedDate, ArrayList<Question> questions,
+			ArrayList<Submission> submissions) {
 		super();
 		this.surveyID = surveyID;
 		this.surveyName = surveyName;
@@ -218,28 +220,28 @@ public class Survey implements Serializable {
 	/**
 	 * @return the questions
 	 */
-	public Question[] getQuestions() {
+	public ArrayList<Question> getQuestions() {
 		return questions;
 	}
 
 	/**
 	 * @param questions the questions to set
 	 */
-	public void setQuestions(Question[] questions) {
+	public void setQuestions(ArrayList<Question> questions) {
 		this.questions = questions;
 	}
 
 	/**
 	 * @return the submissions
 	 */
-	public Submission[] getSubmissions() {
+	public ArrayList<Submission> getSubmissions() {
 		return submissions;
 	}
 
 	/**
 	 * @param submissions the submissions to set
 	 */
-	public void setSubmissions(Submission[] submissions) {
+	public void setSubmissions(ArrayList<Submission> submissions) {
 		this.submissions = submissions;
 	}
 

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.core.Database;
+import com.exception.SurveyInvalidException;
 import com.model.Student;
 import com.model.Survey;
 import com.model_controller.SurveyControllerInterface;
@@ -25,6 +27,11 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Logger for logging status reports.
+	 */
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	/**
 	 * @throws RemoteException
 	 */
 	public SurveyControllerImpl() throws RemoteException {
@@ -36,8 +43,13 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public void saveSurvey(Survey survey) {
-		// TODO Auto-generated method stub
-
+		try {
+			Database.saveSurvey(survey);
+			logger.log(Level.INFO, "Survey saved!");
+		} catch (SurveyInvalidException e) {
+			logger.log(Level.WARNING, "Survey invalid!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -93,6 +105,15 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	public ArrayList<Student> getPendingStudentsForSurvey(long surveyID) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public void showSurveyAnalysis(long surveyID) throws RemoteException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

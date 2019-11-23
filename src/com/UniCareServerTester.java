@@ -25,6 +25,9 @@ import com.model_controller.SurveyControllerInterface;
  */
 public class UniCareServerTester {
 
+	/**
+	 * Logger for logging status reports.
+	 */
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
@@ -44,7 +47,7 @@ public class UniCareServerTester {
 
 			logger.log(Level.INFO, "Bounded to the Instructor service!");
 
-			instructorController.addStudent(null);
+			instructorController.saveProfile(null);
 
 		} catch (NotBoundException ex) {
 			logger.log(Level.INFO, "Bounding to the Instructor service failed!");
@@ -61,7 +64,7 @@ public class UniCareServerTester {
 
 			logger.log(Level.INFO, "Bounded to the Student service!");
 
-			studentController.submitSurveyAnswers(null);
+			studentController.saveProfile(null);
 
 		} catch (NotBoundException ex) {
 			logger.log(Level.INFO, "Bounding to the Student service failed!");

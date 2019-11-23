@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.model.Student;
-import com.model.Submission;
 
 /**
  * StudentControllerInterface contains operations of student and extends Remote
@@ -25,19 +24,13 @@ public interface StudentControllerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public boolean login(String username, String password) throws RemoteException;
+	public Student login(String username, String password) throws RemoteException;
 
 	/**
 	 * @param student
 	 * @throws RemoteException
 	 */
 	public void saveProfile(Student student) throws RemoteException;
-
-	/**
-	 * @param survey
-	 * @throws RemoteException
-	 */
-	public void submitSurveyAnswers(Submission submission) throws RemoteException;
 
 	/**
 	 * @return
@@ -49,19 +42,19 @@ public interface StudentControllerInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public ArrayList<Student> getStudentByName() throws RemoteException;
+	public ArrayList<Student> getStudentsByName(String name) throws RemoteException;
 
 	/**
 	 * @return
 	 * @throws RemoteException
 	 */
-	public Student getStudentByStudentID() throws RemoteException;
+	public Student getStudentByStudentID(long studentID) throws RemoteException;
 
 	/**
 	 * @return
 	 * @throws RemoteException
 	 */
-	public Student getStudentByEmail() throws RemoteException;
+	public Student getStudentByEmail(String email) throws RemoteException;
 
 	/**
 	 * @param batch

@@ -4,6 +4,7 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Submission class defines properties of a submission by student for a survey.
@@ -21,7 +22,7 @@ public class Submission implements Serializable {
 	private long surveyID;
 	private int submissionID;
 	private long submittedStudentID;
-	private Question[] questionsWithSubmittedAnswer;
+	private ArrayList<Question> questionsWithSubmittedAnswer;
 
 	/**
 	 * Default Constructor.
@@ -49,7 +50,7 @@ public class Submission implements Serializable {
 	 * 
 	 * @param questionsWithSubmittedAnswer
 	 */
-	public Submission(Question[] questionsWithSubmittedAnswer) {
+	public Submission(ArrayList<Question> questionsWithSubmittedAnswer) {
 		super();
 		this.questionsWithSubmittedAnswer = questionsWithSubmittedAnswer;
 	}
@@ -63,7 +64,7 @@ public class Submission implements Serializable {
 	 * @param questionsWithSubmittedAnswer
 	 */
 	public Submission(long surveyID, int submissionID, long submittedStudentID,
-			Question[] questionsWithSubmittedAnswer) {
+			ArrayList<Question> questionsWithSubmittedAnswer) {
 		super();
 		this.surveyID = surveyID;
 		this.submissionID = submissionID;
@@ -116,14 +117,14 @@ public class Submission implements Serializable {
 	/**
 	 * @return the questionsWithSubmittedAnswer
 	 */
-	public Question[] getQuestionsWithSubmittedAnswer() {
+	public ArrayList<Question> getQuestionsWithSubmittedAnswer() {
 		return questionsWithSubmittedAnswer;
 	}
 
 	/**
 	 * @param questionsWithSubmittedAnswer the questionsWithSubmittedAnswer to set
 	 */
-	public void setQuestionsWithSubmittedAnswer(Question[] questionsWithSubmittedAnswer) {
+	public void setQuestionsWithSubmittedAnswer(ArrayList<Question> questionsWithSubmittedAnswer) {
 		this.questionsWithSubmittedAnswer = questionsWithSubmittedAnswer;
 	}
 

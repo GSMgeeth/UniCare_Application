@@ -5,11 +5,14 @@ package com.model_controller.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.common.Consts;
+import com.core.Database;
+import com.exception.UserInvalidException;
+import com.exception.UserTypeInvalidException;
 import com.model.Instructor;
-import com.model.Student;
-import com.model.Survey;
 import com.model_controller.InstructorControllerInterface;
 import com.model_controller.StudentControllerInterface;
 import com.model_controller.SurveyControllerInterface;
@@ -26,6 +29,11 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Logger for logging status reports.
+	 */
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private StudentControllerInterface studentController;
 	private SurveyControllerInterface surveyController;
@@ -45,9 +53,21 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 *
 	 */
 	@Override
-	public boolean login(String username, String password) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+	public Instructor login(String username, String password) throws RemoteException {
+		if (username == null | username.equals("") | password == null | password.equals("")) {
+			logger.log(Level.WARNING, "Username\\password is null\\empty");
+			return null;
+		} else {
+			try {
+				Instructor instructor = (Instructor) Database.login(username, password, Consts.USER_TYPE_INSTRUCTOR);
+				logger.log(Level.INFO, "Instructor successfully logged in!");
+				return instructor;
+			} catch (UserTypeInvalidException e) {
+				logger.log(Level.WARNING, "User type is invalid!");
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 
 	/**
@@ -55,109 +75,12 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 	 */
 	@Override
 	public void saveProfile(Instructor instructor) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		try {
+			Database.saveInstructor(instructor);
+			logger.log(Level.INFO, "Instructor saved!");
+		} catch (UserInvalidException e) {
+			logger.log(Level.WARNING, "User invalid!");
+			e.printStackTrace();
+		}
 	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void buildSurvey(Survey survey) throws RemoteException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public Survey loadSurveyByName(String surveyName) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void showSurveyAnalysis(long surveyID) throws RemoteException {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Implements InstructorOperation method from InstructorControllerInterface.
-	 * 
-	 * @throws RemoteException
-	 */
-	@Override
-	public void addStudent(Student student) throws RemoteException {
-
-		studentController.saveProfile(null);
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public ArrayList<Student> loadAllStudents() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public ArrayList<Student> loadStudentByName() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public Student loadStudentByStudentID() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public Student loadStudentByEmail() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public ArrayList<Student> loadPendingStudentsForSurvey(long surveyID) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public ArrayList<Student> loadStudentsByBatch(String batch) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public ArrayList<Student> loadStudentsByCourse(String courseID) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

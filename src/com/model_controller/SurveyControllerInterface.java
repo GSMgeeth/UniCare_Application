@@ -63,4 +63,10 @@ public interface SurveyControllerInterface extends Remote {
 	 * @throws RemoteException
 	 */
 	public ArrayList<Student> getPendingStudentsForSurvey(long surveyID) throws RemoteException;
+
+	/**
+	 * @param surveyID
+	 * @throws RemoteException
+	 */
+	public void showSurveyAnalysis(long surveyID) throws RemoteException;
 }

@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.common.Consts;
+import com.core.Database;
+import com.exception.UserInvalidException;
+import com.exception.UserTypeInvalidException;
 import com.model.Student;
-import com.model.Submission;
 import com.model_controller.StudentControllerInterface;
 import com.model_controller.SubmissionControllerInterface;
 
@@ -24,6 +27,11 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Logger for logging status reports.
+	 */
+	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private SubmissionControllerInterface submissionController;
 
@@ -39,9 +47,21 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 *
 	 */
 	@Override
-	public boolean login(String username, String password) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+	public Student login(String username, String password) throws RemoteException {
+		if (username == null | username.equals("") | password == null | password.equals("")) {
+			logger.log(Level.WARNING, "Username\\password is null\\empty");
+			return null;
+		} else {
+			try {
+				Student student = (Student) Database.login(username, password, Consts.USER_TYPE_STUDENT);
+				logger.log(Level.INFO, "Student successfully logged in!");
+				return student;
+			} catch (UserTypeInvalidException e) {
+				logger.log(Level.WARNING, "User type is invalid!");
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 
 	/**
@@ -49,15 +69,13 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 */
 	@Override
 	public void saveProfile(Student student) throws RemoteException {
-		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Student Saved!");
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void submitSurveyAnswers(Submission submission) throws RemoteException {
-		submissionController.saveSubmission(submission);
+		try {
+			Database.saveStudent(student);
+			logger.log(Level.INFO, "Student saved!");
+		} catch (UserInvalidException e) {
+			logger.log(Level.WARNING, "User invalid!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -65,35 +83,31 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 */
 	@Override
 	public ArrayList<Student> getAllStudents() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getAllStudents();
 	}
 
 	/**
 	 *
 	 */
 	@Override
-	public ArrayList<Student> getStudentByName() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Student> getStudentsByName(String name) throws RemoteException {
+		return Database.getStudentsByName(name);
 	}
 
 	/**
 	 *
 	 */
 	@Override
-	public Student getStudentByStudentID() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public Student getStudentByStudentID(long studentID) throws RemoteException {
+		return Database.getStudentByStudentID(studentID);
 	}
 
 	/**
 	 *
 	 */
 	@Override
-	public Student getStudentByEmail() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public Student getStudentByEmail(String email) throws RemoteException {
+		return Database.getStudentByEmail(email);
 	}
 
 	/**
@@ -101,8 +115,7 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 */
 	@Override
 	public ArrayList<Student> getStudentsByBatch(String batch) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getStudentsByBatch(batch);
 	}
 
 	/**
@@ -110,8 +123,7 @@ public class StudentControllerImpl extends UnicastRemoteObject implements Studen
 	 */
 	@Override
 	public ArrayList<Student> getStudentsByCourse(String courseID) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return Database.getStudentsByCourse(courseID);
 	}
 
 }
