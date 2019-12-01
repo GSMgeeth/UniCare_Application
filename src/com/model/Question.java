@@ -22,7 +22,7 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long surveyID;
-	private int questionID;
+	private long questionID;
 	private String questionText;
 	private AnswerType answerType;
 	private ArrayList<Answer> answers;
@@ -40,7 +40,7 @@ public class Question implements Serializable {
 	 * @param surveyID
 	 * @param questionID
 	 */
-	public Question(long surveyID, int questionID) {
+	public Question(long surveyID, long questionID) {
 		super();
 		this.surveyID = surveyID;
 		this.questionID = questionID;
@@ -69,7 +69,7 @@ public class Question implements Serializable {
 	 * @param answerType
 	 * @param answers
 	 */
-	public Question(long surveyID, int questionID, String questionText, AnswerType answerType,
+	public Question(long surveyID, long questionID, String questionText, AnswerType answerType,
 			ArrayList<Answer> answers) {
 		super();
 		this.surveyID = surveyID;
@@ -96,14 +96,14 @@ public class Question implements Serializable {
 	/**
 	 * @return the questionID
 	 */
-	public int getQuestionID() {
+	public long getQuestionID() {
 		return questionID;
 	}
 
 	/**
 	 * @param questionID the questionID to set
 	 */
-	public void setQuestionID(int questionID) {
+	public void setQuestionID(long questionID) {
 		this.questionID = questionID;
 	}
 

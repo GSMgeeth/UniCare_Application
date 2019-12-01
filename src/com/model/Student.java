@@ -4,6 +4,7 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Student class defines properties specific to student inheriting person class.
@@ -50,6 +51,24 @@ public class Student extends Person implements Serializable {
 	 */
 	public Student(String batch, String courseID, long addedInstructorID) {
 		super();
+		this.batch = batch;
+		this.courseID = courseID;
+		this.addedInstructorID = addedInstructorID;
+	}
+
+	/**
+	 * Student constructor.
+	 * 
+	 * @param personName
+	 * @param signedDate
+	 * @param email
+	 * @param username
+	 * @param password
+	 * @param isDeleted
+	 */
+	public Student(String personName, Date signedDate, String email, String username, String batch, String courseID,
+			long addedInstructorID, String password, boolean isDeleted) {
+		super(personName, signedDate, email, username, password, isDeleted);
 		this.batch = batch;
 		this.courseID = courseID;
 		this.addedInstructorID = addedInstructorID;

@@ -4,8 +4,8 @@
 package com.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Survey class defines survey properties.

@@ -74,6 +74,9 @@ public class InstructorControllerImpl extends UnicastRemoteObject implements Ins
 		} catch (UserInvalidException e) {
 			logger.log(Level.WARNING, "User invalid!");
 			e.printStackTrace();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception in saving user!");
+			e.printStackTrace();
 		}
 	}
 }

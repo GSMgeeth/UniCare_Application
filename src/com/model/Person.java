@@ -4,7 +4,7 @@
 package com.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Person class defines common person properties for the application.
@@ -67,7 +67,6 @@ public class Person implements Serializable {
 	 */
 	public Person(String personName, Date signedDate, String email, String username, String password,
 			boolean isDeleted) {
-		super();
 		this.personName = personName;
 		this.signedDate = signedDate;
 		this.email = email;

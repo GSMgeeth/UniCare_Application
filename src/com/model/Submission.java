@@ -5,6 +5,7 @@ package com.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Submission class defines properties of a submission by student for a survey.
@@ -20,8 +21,8 @@ public class Submission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long surveyID;
-	private int submissionID;
-	private long submittedStudentID;
+	private long submissionID;
+	private Date submittedDate;
 	private ArrayList<Question> questionsWithSubmittedAnswer;
 
 	/**
@@ -36,13 +37,11 @@ public class Submission implements Serializable {
 	 * 
 	 * @param surveyID
 	 * @param submissionID
-	 * @param submittedStudentID
 	 */
-	public Submission(long surveyID, int submissionID, long submittedStudentID) {
+	public Submission(long surveyID, long submissionID) {
 		super();
 		this.surveyID = surveyID;
 		this.submissionID = submissionID;
-		this.submittedStudentID = submittedStudentID;
 	}
 
 	/**
@@ -60,15 +59,24 @@ public class Submission implements Serializable {
 	 * 
 	 * @param surveyID
 	 * @param submissionID
-	 * @param submittedStudentID
 	 * @param questionsWithSubmittedAnswer
 	 */
-	public Submission(long surveyID, int submissionID, long submittedStudentID,
-			ArrayList<Question> questionsWithSubmittedAnswer) {
+	public Submission(long surveyID, long submissionID, ArrayList<Question> questionsWithSubmittedAnswer) {
 		super();
 		this.surveyID = surveyID;
 		this.submissionID = submissionID;
-		this.submittedStudentID = submittedStudentID;
+		this.questionsWithSubmittedAnswer = questionsWithSubmittedAnswer;
+	}
+
+	/**
+	 * @param surveyID
+	 * @param submittedDate
+	 * @param questionsWithSubmittedAnswer
+	 */
+	public Submission(long surveyID, Date submittedDate, ArrayList<Question> questionsWithSubmittedAnswer) {
+		super();
+		this.surveyID = surveyID;
+		this.submittedDate = submittedDate;
 		this.questionsWithSubmittedAnswer = questionsWithSubmittedAnswer;
 	}
 
@@ -89,29 +97,29 @@ public class Submission implements Serializable {
 	/**
 	 * @return the submissionID
 	 */
-	public int getSubmissionID() {
+	public long getSubmissionID() {
 		return submissionID;
 	}
 
 	/**
 	 * @param submissionID the submissionID to set
 	 */
-	public void setSubmissionID(int submissionID) {
+	public void setSubmissionID(long submissionID) {
 		this.submissionID = submissionID;
 	}
 
 	/**
-	 * @return the submittedStudentID
+	 * @return the submittedDate
 	 */
-	public long getSubmittedStudentID() {
-		return submittedStudentID;
+	public Date getSubmittedDate() {
+		return submittedDate;
 	}
 
 	/**
-	 * @param submittedStudentID the submittedStudentID to set
+	 * @param submittedDate the submittedDate to set
 	 */
-	public void setSubmittedStudentID(long submittedStudentID) {
-		this.submittedStudentID = submittedStudentID;
+	public void setSubmittedDate(Date submittedDate) {
+		this.submittedDate = submittedDate;
 	}
 
 	/**

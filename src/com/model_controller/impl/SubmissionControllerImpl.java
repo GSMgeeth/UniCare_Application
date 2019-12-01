@@ -48,6 +48,9 @@ public class SubmissionControllerImpl extends UnicastRemoteObject implements Sub
 		} catch (SubmissionInvalidException e) {
 			logger.log(Level.WARNING, "Submission invalid!");
 			e.printStackTrace();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception in saving submission!");
+			e.printStackTrace();
 		}
 	}
 

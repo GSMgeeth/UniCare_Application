@@ -23,7 +23,8 @@ public class SqlConnection {
 		if (conn == null) {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost/unicare?verifyServerCertificate=false&useSSL=true", "root", "");
+					"jdbc:mysql://localhost/unicare?verifyServerCertificate=false&useSSL=true", "root",
+					"0713413841uSa/");
 		}
 
 		return conn;

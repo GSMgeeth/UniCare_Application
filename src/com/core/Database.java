@@ -3,19 +3,25 @@
  */
 package com.core;
 
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.common.AnswerType;
 import com.common.Consts;
 import com.common.Validation;
 import com.exception.SubmissionInvalidException;
 import com.exception.SurveyInvalidException;
 import com.exception.UserInvalidException;
 import com.exception.UserTypeInvalidException;
+import com.model.Answer;
 import com.model.Instructor;
 import com.model.Person;
+import com.model.Question;
 import com.model.Student;
 import com.model.Submission;
 import com.model.Survey;
@@ -65,20 +71,21 @@ public class Database {
 	 */
 	public static void saveInstructor(Instructor instructor) throws Exception {
 		if (Validation.validateInstructorObject(instructor)) {
-
-			String sql = "INSERT INTO instructor (name, email, uname, pw, reg_date) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO instructor (name, email, signed_date, username, password, isDeleted) VALUES (?,?,?,?,?,?)";
 			SqlConnection.updateDB(sql, ps -> {
 				int i = 0;
 				ps.setString(++i, instructor.getPersonName());
 				ps.setString(++i, instructor.getEmail());
+				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(instructor.getSignedDate()));
 				ps.setString(++i, instructor.getUsername());
 				ps.setString(++i, instructor.getPassword());
-				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(instructor.getSignedDate()));
+				ps.setBoolean(++i, instructor.isDeleted());
 				return ps;
 			});
 
 			logger.log(Level.INFO, "Instructor saved into database!");
 		} else {
+			logger.log(Level.SEVERE, "Instructor saving into database failed!");
 			throw new UserInvalidException();
 		}
 	}
@@ -91,22 +98,23 @@ public class Database {
 	 */
 	public static void saveStudent(Student student) throws Exception {
 		if (Validation.validateStudentObject(student)) {
-
-			String sql = "INSERT INTO student (name, email, batch, courseID, uname, pw, reg_date) VALUES (?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO student (name, email, batch, course_id, signed_date, username, password, isDeleted) VALUES (?,?,?,?,?,?,?,?)";
 			SqlConnection.updateDB(sql, ps -> {
 				int i = 0;
 				ps.setString(++i, student.getPersonName());
 				ps.setString(++i, student.getEmail());
 				ps.setString(++i, student.getBatch());
 				ps.setString(++i, student.getCourseID());
+				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(student.getSignedDate()));
 				ps.setString(++i, student.getUsername());
 				ps.setString(++i, student.getPassword());
-				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(student.getSignedDate()));
+				ps.setBoolean(++i, student.isDeleted());
 				return ps;
 			});
 
 			logger.log(Level.INFO, "Student saved into database!");
 		} else {
+			logger.log(Level.SEVERE, "Student saving into database failed!");
 			throw new UserInvalidException();
 		}
 	}
@@ -117,11 +125,86 @@ public class Database {
 	 * @param survey
 	 * @throws SurveyInvalidException
 	 */
-	public static void saveSurvey(Survey survey) throws SurveyInvalidException {
+	public static void saveSurvey(Survey survey) throws Exception {
 		if (Validation.validateSurveyObject(survey)) {
-			// TBI
+			String sql = "INSERT INTO survey (name, batch, course_id, built_date, published_date, ended_date, built_ins_id) VALUES (?,?,?,?,?,?,?)";
+			SqlConnection.updateDB(sql, ps -> {
+				int i = 0;
+				ps.setString(++i, survey.getSurveyName());
+				ps.setString(++i, survey.getBatch());
+				ps.setString(++i, survey.getCourseID());
+				ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(survey.getBuiltDate()));
+				ps.setString(++i,
+						survey.getPublishedDate() != null
+								? new SimpleDateFormat("yyyy/MM/dd").format(survey.getPublishedDate())
+								: null);
+				ps.setString(++i,
+						survey.getEndedDate() != null ? new SimpleDateFormat("yyyy/MM/dd").format(survey.getEndedDate())
+								: null);
+				ps.setLong(++i, survey.getBuiltInstructorID());
+				return ps;
+			});
+
 			logger.log(Level.INFO, "Survey saved into database!");
+
+			Calendar cal = Calendar.getInstance();
+
+			cal.setTime(survey.getBuiltDate());
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int year = cal.get(Calendar.YEAR);
+
+			ResultSet rs = SqlConnection.getData("Select MAX(id) from survey where built_ins_id="
+					+ survey.getBuiltInstructorID() + " and built_date='" + year + "-" + month + "-" + day + "';");
+
+			if (rs.first()) {
+				long surveyId = rs.getLong(1);
+
+				for (Question q : survey.getQuestions()) {
+
+					ResultSet rsAnsType = SqlConnection
+							.getData("Select id from answer_type where type='" + q.getAnswerType().getString() + "';");
+
+					if (rsAnsType.first()) {
+						long ansTypeId = rsAnsType.getLong(1);
+
+						sql = "INSERT INTO question (survey_id, text, answer_type_id) VALUES (?,?,?)";
+						SqlConnection.updateDB(sql, ps -> {
+							int i = 0;
+							ps.setLong(++i, surveyId);
+							ps.setString(++i, q.getQuestionText());
+							ps.setLong(++i, ansTypeId);
+							return ps;
+						});
+
+						logger.log(Level.INFO, "Question: '" + q.getQuestionText() + "' saved into database!");
+
+						ResultSet rsQues = SqlConnection
+								.getData("Select MAX(id) from question where survey_id=" + surveyId + ";");
+
+						if (rsQues.first()) {
+							long quesId = rsQues.getLong(1);
+
+							for (Answer ans : q.getAnswers()) {
+								sql = "INSERT INTO answer (survey_id, question_id, text, selected) VALUES (?,?,?,?)";
+								SqlConnection.updateDB(sql, ps -> {
+									int i = 0;
+									ps.setLong(++i, surveyId);
+									ps.setLong(++i, quesId);
+									ps.setString(++i, ans.getAnswerText());
+									ps.setBoolean(++i, ans.isSelected());
+									return ps;
+								});
+
+								logger.log(Level.INFO, "Question: '" + q.getQuestionText() + "' answer: '"
+										+ ans.getAnswerText() + "' saved into database!");
+							}
+						}
+					}
+				}
+			}
 		} else {
+			logger.log(Level.SEVERE, "Survey saving into database failed!");
 			throw new SurveyInvalidException();
 		}
 	}
@@ -132,11 +215,58 @@ public class Database {
 	 * @param submission
 	 * @throws SurveyInvalidException
 	 */
-	public static void saveSubmission(Submission submission) throws SubmissionInvalidException {
+	public static void saveSubmission(Submission submission) throws Exception {
 		if (Validation.validateSubmissionObject(submission)) {
-			// TBI
-			logger.log(Level.INFO, "Submission saved into database!");
+
+			ReentrantLock lock = new ReentrantLock();
+			lock.lock();
+
+			try {
+				String sql = "INSERT INTO submission (survey_id, submitted_date) VALUES (?,?)";
+				SqlConnection.updateDB(sql, ps -> {
+					int i = 0;
+					ps.setLong(++i, submission.getSurveyID());
+					ps.setString(++i, new SimpleDateFormat("yyyy/MM/dd").format(submission.getSubmittedDate()));
+					return ps;
+				});
+
+				logger.log(Level.INFO, "Submission saved into database!");
+
+				Calendar cal = Calendar.getInstance();
+
+				cal.setTime(submission.getSubmittedDate());
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int month = cal.get(Calendar.MONTH) + 1;
+				int year = cal.get(Calendar.YEAR);
+
+				ResultSet rs = SqlConnection.getData("Select MAX(id) from submission where survey_id="
+						+ submission.getSurveyID() + " and submitted_date='" + year + "-" + month + "-" + day + "';");
+
+				if (rs.first()) {
+					long submissionId = rs.getLong(1);
+
+					for (Question q : submission.getQuestionsWithSubmittedAnswer()) {
+
+						sql = "INSERT INTO submitted_answer (survey_id, submission_id, question_id, answer_id) VALUES (?,?,?,?)";
+						SqlConnection.updateDB(sql, ps -> {
+							int i = 0;
+							ps.setLong(++i, submission.getSurveyID());
+							ps.setLong(++i, submissionId);
+							ps.setLong(++i, q.getQuestionID());
+							ps.setLong(++i, q.getAnswers().stream().filter(a -> a.isSelected()).findFirst().get()
+									.getAnswerID());
+							return ps;
+						});
+
+						logger.log(Level.INFO, "Submitted answer saved into database!");
+					}
+				}
+
+			} finally {
+				lock.unlock();
+			}
 		} else {
+			logger.log(Level.SEVERE, "Submission saving into database failed!");
 			throw new SubmissionInvalidException();
 		}
 	}
@@ -281,10 +411,69 @@ public class Database {
 	 * @param surveyName
 	 * @return Survey.
 	 */
-	public static Survey getSurveyByName(String surveyName) {
+	public static Survey getSurveyByName(String surveyName) throws Exception {
 		if (surveyName != null && !surveyName.equals("")) {
 			Survey survey = new Survey();
-			// TBI
+			ArrayList<Question> questions = new ArrayList<Question>();
+
+			ResultSet rs = SqlConnection.getData(
+					"Select id, batch, course_id, built_date, published_date, ended_date from survey where name='"
+							+ surveyName + "';");
+
+			if (rs.first()) {
+				long surveyId = rs.getLong(1);
+				survey.setSurveyID(surveyId);
+				survey.setSurveyName(surveyName);
+				survey.setBatch(rs.getString(2));
+				survey.setCourseID(rs.getString(3));
+				survey.setBuiltDate(rs.getDate(4));
+				survey.setPublishedDate(rs.getDate(5));
+				survey.setEndedDate(rs.getDate(6));
+
+				rs = SqlConnection
+						.getData("Select id, text, answer_type_id from question where survey_id=" + surveyId + ";");
+
+				while (rs.next()) {
+					long questionId = rs.getLong(1);
+					String qText = rs.getString(2);
+					int ansTypeId = rs.getInt(3);
+
+					Question question = new Question(surveyId, questionId);
+
+					ResultSet rsAnsType = SqlConnection
+							.getData("select type from answer_type where id=" + ansTypeId + ";");
+
+					if (rsAnsType.first()) {
+						String answerType = rsAnsType.getString(1);
+
+						question.setQuestionText(qText);
+
+						if (answerType.equalsIgnoreCase(AnswerType.SCALES.getString())) {
+							question.setAnswerType(AnswerType.SCALES);
+						} else if (answerType.equalsIgnoreCase(AnswerType.YES_NO.getString())) {
+							question.setAnswerType(AnswerType.YES_NO);
+						}
+
+						ResultSet rsAns = SqlConnection.getData("select id, text from answer where survey_id="
+								+ surveyId + " and question_id=" + questionId + ";");
+
+						ArrayList<Answer> answers = new ArrayList<Answer>();
+
+						while (rsAns.next()) {
+							long answerId = rsAns.getLong(1);
+							String ansText = rsAns.getString(2);
+
+							answers.add(new Answer(surveyId, questionId, answerId, ansText, false));
+						}
+
+						question.setAnswers(answers);
+					}
+
+					questions.add(question);
+				}
+
+				survey.setQuestions(questions);
+			}
 
 			return survey;
 		}

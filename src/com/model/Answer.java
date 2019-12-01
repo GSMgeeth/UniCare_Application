@@ -19,10 +19,10 @@ public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long surveyID;
-	private int questionID;
-	private int answerID;
+	private long questionID;
+	private long answerID;
 	private String answerText;
-	private boolean isCorrect;
+	private boolean selected;
 
 	/**
 	 * Default Constructor.
@@ -38,7 +38,7 @@ public class Answer implements Serializable {
 	 * @param questionID
 	 * @param answerID
 	 */
-	public Answer(long surveyID, int questionID, int answerID) {
+	public Answer(long surveyID, long questionID, long answerID) {
 		super();
 		this.surveyID = surveyID;
 		this.questionID = questionID;
@@ -49,12 +49,12 @@ public class Answer implements Serializable {
 	 * Constructor with answer text and correctness in boolean.
 	 * 
 	 * @param answerText
-	 * @param isCorrect
+	 * @param selected
 	 */
-	public Answer(String answerText, boolean isCorrect) {
+	public Answer(String answerText, boolean selected) {
 		super();
 		this.answerText = answerText;
-		this.isCorrect = isCorrect;
+		this.selected = selected;
 	}
 
 	/**
@@ -64,15 +64,15 @@ public class Answer implements Serializable {
 	 * @param questionID
 	 * @param answerID
 	 * @param answerText
-	 * @param isCorrect
+	 * @param selected
 	 */
-	public Answer(long surveyID, int questionID, int answerID, String answerText, boolean isCorrect) {
+	public Answer(long surveyID, long questionID, long answerID, String answerText, boolean selected) {
 		super();
 		this.surveyID = surveyID;
 		this.questionID = questionID;
 		this.answerID = answerID;
 		this.answerText = answerText;
-		this.isCorrect = isCorrect;
+		this.selected = selected;
 	}
 
 	/**
@@ -92,28 +92,28 @@ public class Answer implements Serializable {
 	/**
 	 * @return the questionID
 	 */
-	public int getQuestionID() {
+	public long getQuestionID() {
 		return questionID;
 	}
 
 	/**
 	 * @param questionID the questionID to set
 	 */
-	public void setQuestionID(int questionID) {
+	public void setQuestionID(long questionID) {
 		this.questionID = questionID;
 	}
 
 	/**
 	 * @return the answerID
 	 */
-	public int getAnswerID() {
+	public long getAnswerID() {
 		return answerID;
 	}
 
 	/**
 	 * @param answerID the answerID to set
 	 */
-	public void setAnswerID(int answerID) {
+	public void setAnswerID(long answerID) {
 		this.answerID = answerID;
 	}
 
@@ -132,17 +132,17 @@ public class Answer implements Serializable {
 	}
 
 	/**
-	 * @return the isCorrect
+	 * @return the selected
 	 */
-	public boolean isCorrect() {
-		return isCorrect;
+	public boolean isSelected() {
+		return selected;
 	}
 
 	/**
-	 * @param isCorrect the isCorrect to set
+	 * @param selected the selected to set
 	 */
-	public void setCorrect(boolean isCorrect) {
-		this.isCorrect = isCorrect;
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }

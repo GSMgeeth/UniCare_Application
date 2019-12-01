@@ -103,7 +103,7 @@ public final class Validation {
 	public static boolean validateSubmissionObject(Submission submission) {
 		if (submission != null)
 			if (submission.getSurveyID() > 0)
-				if (submission.getSubmittedStudentID() > 0)
+				if (submission.getSubmittedDate() != null)
 					if (submission.getQuestionsWithSubmittedAnswer() != null
 							&& !submission.getQuestionsWithSubmittedAnswer().isEmpty()
 							&& submission.getQuestionsWithSubmittedAnswer().stream()

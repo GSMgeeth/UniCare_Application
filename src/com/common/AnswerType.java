@@ -11,5 +11,15 @@ package com.common;
  */
 public enum AnswerType {
 
-	YES_NO, SCALES
+	YES_NO("yes_no"), SCALES("scales");
+
+	private String type;
+
+	AnswerType(String type) {
+		this.type = type;
+	}
+
+	public String getString() {
+		return type;
+	}
 }

@@ -49,6 +49,9 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 		} catch (SurveyInvalidException e) {
 			logger.log(Level.WARNING, "Survey invalid!");
 			e.printStackTrace();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception in saving survey!");
+			e.printStackTrace();
 		}
 	}
 
@@ -73,7 +76,17 @@ public class SurveyControllerImpl extends UnicastRemoteObject implements SurveyC
 	 */
 	@Override
 	public Survey getSurveyByName(String surveyName) throws RemoteException {
-		return Database.getSurveyByName(surveyName);
+		Survey survey = null;
+
+		try {
+			survey = Database.getSurveyByName(surveyName);
+			logger.log(Level.INFO, "Survey fetched!");
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Exception in getting survey by name!");
+			e.printStackTrace();
+		}
+
+		return survey;
 	}
 
 	/**
